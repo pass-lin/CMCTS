@@ -495,7 +495,7 @@ class ChatGenerateModel(GenerateModel):
                     code_results[result_index]["content"],
                     code_inputs[result_index],
                 )
-                code_result = deepcopy(code_result.replace("print(", "#print("))
+                code_result = deepcopy(code_result.replace("print(", "scan_to_print = ("))
                 code_result = eval_function([code_result, code_input])
                 outputs[inputs_index] = code_result
                 if code_result[0] is not None:
@@ -1799,6 +1799,115 @@ def run_with_timeout(code, timeout=1):
 
 
 class DeepMCTSModel4(DeepMCTSModel3):
+    def generate_code(self, inputs):
+        prefix = self.prompt["code_prefix"]
+        stop = "```"
+
+        def eval_function(inputs):
+            global codes
+            code_result, code_input = inputs
+            code = code_result.replace(code_input[-1]["content"], "")
+
+            if "jax" in code or "tensorflow" in code:
+                return None, [
+                    "Your code should not use neural network libraries like JAX or TensorFlow.",
+                    code_result,
+                ]
+            elif "matplotlib" in code:
+                return None, [
+                    "The visualization code of matplotlib is of no help in solving this problem. Please write a new code. Don't use the matplotlib library.",
+                    code_result,
+                ]
+            try:
+                local_vars = run_with_timeout(code, timeout=2)
+                codes.append(code)
+                execute_result = ""
+                flag = True
+                for name, value in local_vars.items():
+                    value_type = str(type(value))
+                    old_type = type(value)
+                    if (
+                        name in code
+                        and value_type != "<class 'function'>"
+                        and "<class 'module'>" not in value_type
+                    ):
+                        flag = False
+                        if "float" in value_type:
+                            value = round(value, 4)
+                        if (
+                            "list" in value_type
+                            or "tuple" in value_type
+                            or "array" in value_type
+                        ):
+                            try:
+                                value = np.array(value)
+                                value = old_type(value)(np.round_(value, 4))
+                            except:
+                                if "list" in value_type:
+                                    value = [
+                                        round(x, 4) if isinstance(x, float) else x
+                                        for x in value
+                                    ]
+                                elif "tuple" in value_type:
+                                    value = tuple(
+                                        [
+                                            round(x, 4) if isinstance(x, float) else x
+                                            for x in value
+                                        ]
+                                    )
+                        execute_result += "%s:%s;" % (str(name), str(value))
+                if flag:
+                    execute_result = "\nThis  code execute fail\n"
+                else:
+                    execute_result = (
+                        "\nThe running status of existing variables:\n%s\n"
+                        % execute_result
+                    )
+                code_result = (
+                    prefix + code + "\n" + self.prompt["code_stop"] + execute_result
+                )
+                return [code_result, code_result]
+            except TimeoutError:
+                if "sympy" in code:
+                    return None, [
+                        "Please ensure that all sympy calculations can be completed within 2 seconds, and the number of polynomials should not exceed 6.",
+                        code_result,
+                    ]
+                return None, [
+                    "Your code may contain an infinite loop. Please modify your code. Try to avoid using a while loop; you can change it to a for loop or use Python libraries like math, sympy, or scipy to solve your problem.",
+                    code_result,
+                ]
+            except Exception as e:
+                if "is not defined" in str(e).lower():
+                    return None, [
+                        "your code find a error call:"
+                        + str(e)
+                        + "\nThe generated code should be able to execute successfully without relying on external variables.If you have used these variables before, please rewrite them again.",
+                        code_result,
+                    ]
+
+                if "timed out" in str(e).lower():
+                    return None, [
+                        "Your code may contain an infinite loop. Please modify your code. Try to avoid using a while loop; you can change it to a for loop or use Python libraries like math, sympy, or scipy to solve your problem.",
+                        code_result,
+                    ]
+                return [None, [str(e), code]]
+
+        outputs, flags = super(DeepMCTSModel, self).generate_code(
+            inputs, prefix=prefix, stop=stop, eval_function=eval_function
+        )
+        for i in range(len(outputs)):
+            if not flags[i]:
+                outputs[i] = outputs[i][0]
+                while "\n\n\n" in outputs[i]:
+                    outputs[i] = outputs[i].replace("\n\n\n", "\n\n")
+            else:
+                outputs[i] = (
+                    outputs[i][1][-1] + "This code find error:\n" + outputs[i][1][0]
+                )
+        return outputs
+
+class DeepMCTSModel5(DeepMCTSModel3):
     def generate_code(self, inputs):
         prefix = self.prompt["code_prefix"]
         stop = "```"

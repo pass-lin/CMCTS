@@ -18,6 +18,30 @@ weak12kprompt = {
     "useful_prefix_PRM": "\n\n",
     "stop": ["\n\n", "\n步骤"],
 }
+game24_prompt = {
+    "instruction": {
+        "role": "system",
+        "content": """
+这是一个24点游戏，你需要在下面数字的限定范围内使用加减乘除的方法将其组合成一条24的式子。需要注意的是不能使用没提到的数字，但是可以不使用提到的数字。并且使用的数字不能超过题目里提到的最大次数。
+在你觉得问题思考过程已经能够解决问题后，整理你的思考过程成一分完整答案，并且最终的组合式子写在\\boxed{{}}中。
+                  """,
+    },
+    "answer_prefix": "让我们一步步思考来解决这个问题:",
+    "question_prefix": "\n步骤%d. **",
+    "question_postfix": "**",
+    "overall_question_prefix": "现在我们可以回答这个问题:",
+    "useful_instrution": "\n给出一个问题及其对应的子问题和答案。判断这个过程是否有助于回答问题。输出'是'或'否'，并给出理由。\n\n问题 1:",
+    "useful_question_prefix": "**",
+    "useful_examples_prefix": "\n给出一个问题及其对应的子问题和答案。判断这个过程是否有助于回答问题。输出'是'或'否'，并给出理由。\n\n问题 1:",
+    "yes_token": " 是,",
+    "no_token": " 否,",
+    "interactive_examples": [],
+    "useful_prefix": "上面这个问题的解答过程是否有利于我们回答这个问题吗?",
+    "useful_instrution_PRM": "问题 1:",
+    "useful_prefix_PRM": "\n\n",
+    "stop": ["\n\n", "\n步骤"],
+    "user_prefix":"根据下面的要求使用加减乘除组合将下面的数字成一个计算结果为24的式子，最后把式子写入\\boxed{{}}中,不允许使用下面没提到的数字。\n具体描述：",
+}
 schoolprompt = {
     "instruction": {
         "role": "system",
@@ -47,9 +71,9 @@ gaokaoprompt = {
     "question_prefix": "\n步骤%d. **",
     "question_postfix": "**",
     "overall_question_prefix": "现在我们可以回答这个问题:",
-    "useful_instrution": "\n给出一个问题及其对应的子问题和答案。判断这个过程是否有助于回答问题。输出'是'或'否'，并给出理由。\n\n问题 1:",
+    "useful_instrution": "\n这是一个24点游戏，下面会给你一个列表，你使用列表里的数字组合一个式子使得这个式子的答案是24.需要注意的是，数字的使用次数不能大于这个数字在列表里的出现次数，并且不能使用列表中不存在的数字。对于下面的解题过程，如果能帮助解出答案输出'是'，否则输出'否'，又或者他符合24点规则输出'是'，否则输出'否'。\n\n任务:%s \n当前的解题过程:\n%s\n",
     "useful_question_prefix": "**",
-    "useful_examples_prefix": "\n给出一个问题及其对应的子问题和答案。判断这个过程是否有助于回答问题。输出'是'或'否'，并给出理由。\n\n问题 1:",
+    "useful_examples_prefix": "\n这是一个24点游戏，下面会给你一个列表，你使用列表里的数字组合一个式子使得这个式子的答案是24.需要注意的是，数字的使用次数不能大于这个数字在列表里的出现次数，并且不能使用列表中不存在的数字。对于下面的解题过程，如果能帮助解出答案输出'是'，否则输出'否'，又或者他符合24点规则输出'是'，否则输出'否'。\n\n任务:%s \n当前的解题过程:\n%s\n",
     "yes_token": " 是,",
     "no_token": " 否,",
     "interactive_examples": [],
@@ -57,6 +81,7 @@ gaokaoprompt = {
     "useful_instrution_PRM": "问题 1:",
     "useful_prefix_PRM": "\n\n",
     "stop": ["\n\n", "\n步骤"],
+    "user_prefix":"根据下面的要求使用加减乘除组合将下面的数字成一个计算结果为24的式子，最后把式子写入\\boxed{{}}中。",
 }
 weak12k_usefulprompt = {
     "input": "给定一个问题和一些子问题,确定最后一个子问题是否有利于回答这个问题吗?.输出“是”或“否”,以及一个原因.\n\n",
@@ -69,7 +94,17 @@ weak12k_usefulprompt = {
     "yes_token": " 是,",
     "no_token": " 否,",
 }
-
+game24_usefulprompt = {
+    "input": "这是一个24点游戏，下面会给你一个列表，你使用列表里的数字组合一个式子使得这个式子的答案是24.需要注意的是，数字的使用次数不能大于这个数字在列表里的出现次数，并且不能使用列表中不存在的数字。对于下面的解题过程，如果能帮助解出答案输出'是'，否则输出'否'，又或者他符合24点规则输出'是'，否则输出'否'。\n\n",
+    "question_prefix": "任务: ",
+    "subquestion_prefix": "任务 1.{}:",
+    "new_subquestion_prefix": "新的过程 1.{}:",
+    "useful_prefix": "新的过程能不能帮助解决这个问题?",
+    "input_PRM": "\n",
+    "useful_prefix_PRM": "\n",
+    "yes_token": " 是,",
+    "no_token": " 否,",
+}
 gsm8kprompt = {
     "instruction": {
         "role": "system",

@@ -4,7 +4,7 @@ import random
 import copy
 from reasoners.base import Evaluator
 import string
-
+import pandas as pd
 
 class GSM8KEvaluator(Evaluator):
     def __init__(
@@ -228,3 +228,16 @@ class MMLUEvaluator(GSM8KEvaluator):
                     "answer": string.ascii_uppercase[t["answer"]],
                 }
                 self.full_dataset.append(t)
+                
+class Game24Evaluator(GSM8KEvaluator):
+    def __init__(
+        self, filename, init_prompt=None, sample_prompt_type="rap", **kwargs
+    ) -> None:
+        super(GSM8KEvaluator, self).__init__(**kwargs)
+        self.sample_prompt_type = sample_prompt_type
+
+        self.init_prompt = init_prompt
+        self._dataset_name = filename.replace("\\", "/").split("/")[-2]
+        self.full_dataset = pd.read_csv(filename).values[:,1]
+
+
