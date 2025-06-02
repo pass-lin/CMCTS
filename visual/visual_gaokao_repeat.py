@@ -1,5 +1,8 @@
 '''
-可视化native和cmcts的state状态
+我们从Gakao-en数据集中采样了一部分数据。我们在Native-MCTS-PRM和CMCTS-PRM上多次运行推理程序，并收集了所有生成的状态。
+可视化native和cmcts的state
+需要注意的是，为了避免因为超参数的影响。我们在运行这个脚本的时候top-p设置为1，top-k设置为512
+这是因为原来的设置topp和topk都不会开很低，这种情况下我觉得不能真正展示他们所采样的状态多样性的上线。
 '''
 
 import json
