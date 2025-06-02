@@ -66,3 +66,4 @@ if native_rewards_mode:
 - `partial_order`: Controls whether specific partial order rules are enabled. Set all to `False` if not needed.
 - `native_rewards_mode`: Determines whether to use the model itself as PRM (Process Reward Model). When enabled, all partial order rules are automatically turned on in most scripts. In a few scripts, it remains consistent with using the PRM model.
 
+It should be noted that the current version only supports models from the qwen2.5 series, and other models need to be modified by yourself.

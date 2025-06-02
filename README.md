@@ -56,4 +56,4 @@ if native_rewards_mode:
 - `partial_order`：控制是否启用特定的偏序规则。如果不需要，可以全部设置为`False`。
 - `native_rewards_mode`：决定是否使用模型自身作为PRM（过程奖励模型）。启用此模式时，在大部分脚本里会自动开启所有偏序规则，少部分脚本里会保持和使用PRM模型时保持一致
 
-需要注意，目前版本只支持qwen2.5系列的模型，其他模型需要自己修改代码。
+It should be noted that the current version only supports models from the qwen2.5 series, and other models need to be modified by yourself.
