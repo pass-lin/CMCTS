@@ -1,4 +1,4 @@
-# C-MCTS项目官方开源代码指南
+
 [中文文档](README_CN.md)
 
 ## Project Overview
