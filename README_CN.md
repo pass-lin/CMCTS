@@ -1,6 +1,6 @@
 ## 项目概述
 
-本项目实现了论文[《Leveraging Constrained Monte Carlo Tree Search to Generate Reliable Long Chain-of-Thought for Mathematical Reasoning》](https://arxiv.org/abs/2502.11169 )中提出的C-MCTS算法。该项目旨在通过约束蒙特卡洛树搜索提高大型语言模型的数学推理能力，特别是生成可靠的长思维链。
+本项目实现了论文[《CMCTS: A Constrained Monte Carlo Tree Search Framework for Mathematical Reasoning in Large Language Model》](https://arxiv.org/abs/2502.11169 )中提出的C-MCTS算法。该项目旨在通过约束蒙特卡洛树搜索提高大型语言模型的数学推理能力，特别是生成可靠的长思维链。
 
 ## 代码结构
 ### COT测试方法
