@@ -3,7 +3,7 @@
 
 ## Project Overview
 
-This project implements the C-MCTS algorithm proposed in the paper [“Leveraging Constrained Monte Carlo Tree Search to Generate Reliable Long Chain-of-Thought for Mathematical Reasoning”](https://arxiv.org/abs/2502.11169). The project aims to enhance the mathematical reasoning capabilities of large language models, particularly in generating reliable long chains of thought, through constrained Monte Carlo tree search.
+This project implements the C-MCTS algorithm proposed in the paper [“CMCTS: A Constrained Monte Carlo Tree Search Framework for Mathematical Reasoning in Large Language Model”](https://arxiv.org/abs/2502.11169). The project aims to enhance the mathematical reasoning capabilities of large language models, particularly in generating reliable long chains of thought, through constrained Monte Carlo tree search.
 
 ## Code Structure
 
